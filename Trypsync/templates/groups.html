@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Groups - TripSync{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2>Groups</h2>
+  <a class="btn btn-success" href="{{ url_for('create_group') }}">Create Group</a>
+</div>
+
+<h5>Your Groups</h5>
+{% if my_groups %}
+  <div class="list-group mb-3">
+    {% for g in my_groups %}
+      <a class="list-group-item list-group-item-action" href="{{ url_for('group_detail', group_id=g.id) }}">{{ g.name }}</a>
+    {% endfor %}
+  </div>
+{% else %}
+  <p><em>You are not a member of any groups.</em></p>
+{% endif %}
+
+<h5>All Groups</h5>
+<div class="list-group">
+  {% for g in all_groups %}
+    <a class="list-group-item list-group-item-action" href="{{ url_for('group_detail', group_id=g.id) }}">{{ g.name }}{% if g.admin_id==current_user.id %} <span class="badge bg-secondary ms-2">Admin</span>{% endif %}</a>
+  {% endfor %}
+</div>
+
+{% endblock %}

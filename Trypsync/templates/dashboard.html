@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - TripSync{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h2>Welcome back, {{ current_user.name }} 👋</h2>
+    <p class="text-muted small">Here's a snapshot of your upcoming trips, groups and chats.</p>
+  </div>
+  <div>
+    <a class="btn btn-outline-primary me-2" href="{{ url_for('create_trip') }}">Create Trip</a>
+    <a class="btn btn-primary" href="{{ url_for('groups') }}">Explore Groups</a>
+  </div>
+</div>
+
+<!-- Analytics cards -->
+<div class="row g-3 card-analytics mb-4">
+  <div class="col-12 col-md-3">
+    <div class="card p-3 card-hover">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <div class="stat-number">{{ upcoming|length if upcoming is defined else 0 }}</div>
+          <div class="stat-label">Upcoming Trips</div>
+        </div>
+        <div><i class="bi bi-calendar-event fs-2 text-primary"></i></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-md-3">
+    <div class="card p-3 card-hover">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <div class="stat-number">{{ ongoing|length if ongoing is defined else 0 }}</div>
+          <div class="stat-label">Ongoing Trips</div>
+        </div>
+        <div><i class="bi bi-geo-alt fs-2 text-success"></i></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-md-3">
+    <div class="card p-3 card-hover">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <div class="stat-number">{{ completed|length if completed is defined else 0 }}</div>
+          <div class="stat-label">Completed Trips</div>
+        </div>
+        <div><i class="bi bi-check2-circle fs-2 text-muted"></i></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-md-3">
+    <div class="card p-3 card-hover">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <div class="stat-number">{{ my_groups|length if my_groups is defined else 0 }}</div>
+          <div class="stat-label">Groups</div>
+        </div>
+        <div><i class="bi bi-people fs-2 text-warning"></i></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4">
+  <div class="col-12 col-lg-4">
+    <div class="card p-3 mb-3">
+      <h5>My Groups <small class="text-muted">(click to open)</small></h5>
+      <div class="list-group group-list mt-2">
+        {% for g in my_groups %}
+          <div class="list-group-item">
+            <div>
+              <strong>{{ g.name }}</strong>
+              {% if g.admin_id == current_user.id %}
+                <span class="badge bg-success group-badge ms-2">Admin</span>
+              {% endif %}
+              <div class="small text-muted">{{ g.description or '' }}</div>
+            </div>
+            <div class="btn-group btn-group-sm">
+              {% if g.is_member %}
+                <form method="post" action="{{ url_for('groups', ) }}">
+                  <!-- leave button placeholder; implement JS or route call for leave -->
+                  <button class="btn btn-outline-danger" disabled title="Leave group (not implemented)">Leave</button>
+                </form>
+              {% else %}
+                <button class="btn btn-outline-primary" disabled title="Join group (not implemented)">Join</button>
+              {% endif %}
+            </div>
+          </div>
+        {% else %}
+          <div class="list-group-item text-muted">You are not a member of any groups yet.</div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="card p-3">
+      <h5>Quick Tips</h5>
+      <ul class="small text-muted">
+        <li>Use Groups to plan trips with friends.</li>
+        <li>Open a group's chat to coordinate in real-time.</li>
+        <li>Track expenses per trip from the Expenses page.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="col-12 col-lg-8">
+    <div class="card p-3 mb-3">
+      <h5>Recent Trips</h5>
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr><th>Title</th><th>Destination</th><th>Dates</th><th></th></tr>
+          </thead>
+          <tbody>
+            {% for t in upcoming + ongoing + completed if (upcoming is defined and ongoing is defined and completed is defined) %}
+              <tr>
+                <td>{{ t.title }}</td>
+                <td>{{ t.destination }}</td>
+                <td>{{ t.start_date }} — {{ t.end_date }}</td>
+                <td><a class="btn btn-sm btn-outline-primary" href="{{ url_for('view_trip', trip_id=t.id) }}">Open</a></td>
+              </tr>
+            {% else %}
+              <tr><td colspan="4" class="text-muted">No trips yet.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card p-3">
+      <h5>Group Chats</h5>
+      {% for g in my_groups %}
+        <div class="mb-3">
+          <div class="d-flex justify-content-between align-items-center">
+            <div><strong>{{ g.name }}</strong> <div class="small text-muted">{{ g.description or '' }}</div></div>
+            <div class="small text-muted">Members: {{ g.member_count or 0 }}</div>
+          </div>
+          <div class="chat-panel mt-2" id="chat-{{ g.id }}">
+            <!-- messages will be loaded by client JS if Socket.IO is enabled -->
+            <div class="text-muted small">Chat preview not loaded in demo.</div>
+          </div>
+          <div class="chat-input mt-2 d-flex">
+            <input class="form-control me-2" placeholder="Send a message..." disabled>
+            <button class="btn btn-primary" disabled>Send</button>
+          </div>
+        </div>
+      {% else %}
+        <p class="text-muted">No group chats yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}

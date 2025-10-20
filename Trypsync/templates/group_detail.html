@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ group.name }} - TripSync{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-start">
+  <div>
+    <h2>{{ group.name }}</h2>
+    <p class="text-muted">{{ group.description or '' }}</p>
+    <p><strong>Admin:</strong> {{ group.admin.name }}</p>
+  </div>
+  <div>
+    {% if is_member %}
+      <form method="post" action="{{ url_for('leave_group', group_id=group.id) }}" onsubmit="return confirm('Leave group?');">
+        <button class="btn btn-outline-danger">Leave Group</button>
+      </form>
+    {% else %}
+      <form method="post" action="{{ url_for('join_group', group_id=group.id) }}">
+        <button class="btn btn-primary">Join Group</button>
+      </form>
+    {% endif %}
+  </div>
+</div>
+
+<div class="mt-4">
+  <h5>Members</h5>
+  <ul class="list-group">
+    {% for m in members %}
+      <li class="list-group-item">{{ m.name }}{% if m.id==group.admin_id %} <span class="badge bg-secondary ms-2">Admin</span>{% endif %}</li>
+    {% endfor %}
+  </ul>
+</div>
+
+<div class="mt-4">
+  <h5>Group Chat</h5>
+  <div class="small text-muted mb-2">Status: <span id="chat-status">Connecting...</span></div>
+  <div id="chat" data-group-id="{{ group.id }}" data-current-user-id="{{ current_user_id }}" class="chat-panel">
+    <ul id="messages" class="chat-messages"></ul>
+    <form id="chat-form" class="chat-input">
+      <input id="chat-input" class="form-control" placeholder="Type a message..." autocomplete="off">
+      <input id="chat-file" type="file" class="form-control form-control-sm ms-2" style="max-width:120px">
+      <button type="button" id="share-location" class="btn btn-outline-secondary ms-2" title="Share location">📍</button>
+      <button type="submit" class="btn btn-primary ms-2">Send</button>
+    </form>
+  </div>
+</div>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/chat.css') }}">
+<script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
+<script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+
+{% endblock %}

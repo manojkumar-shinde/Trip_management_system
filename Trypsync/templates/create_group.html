@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Group - TripSync{% endblock %}
+
+{% block content %}
+<h2>Create Group</h2>
+<form method="post">
+  {{ form.hidden_tag() }}
+  <div class="mb-3">{{ form.name.label(class_='form-label') }}{{ form.name(class_='form-control') }}</div>
+  <div class="mb-3">{{ form.description.label(class_='form-label') }}{{ form.description(class_='form-control', rows=4) }}</div>
+  <button class="btn btn-primary">Create</button>
+</form>
+
+{% endblock %}

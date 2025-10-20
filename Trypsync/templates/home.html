@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - TripSync{% endblock %}
+
+{% block content %}
+<section class="hero py-5 text-center">
+  <div class="container">
+    <h1 class="display-4">Plan smarter. Travel together.</h1>
+    <p class="lead text-muted">TripSync helps groups plan trips, share itineraries, chat in real-time, and split expenses — all in one place.</p>
+    <div class="d-flex justify-content-center gap-2 mt-4">
+      <a class="btn btn-lg btn-primary" href="{{ url_for('dashboard') if current_user.is_authenticated else url_for('login') }}">Get Started</a>
+      <a class="btn btn-lg btn-outline-primary" href="#features">Learn More</a>
+    </div>
+  </div>
+</section>
+
+<section id="features" class="py-5">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title">Collaborative Groups</h5>
+            <p class="card-text text-muted">Invite friends, create groups, and plan trips together with shared itineraries and group chat.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title">Itineraries & Tasks</h5>
+            <p class="card-text text-muted">Keep structured day-by-day plans, assign tasks, and track costs per activity.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title">Chat & Expenses</h5>
+            <p class="card-text text-muted">Realtime group chat with media support and built-in expense splitting to keep finances clear.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-5 bg-light">
+  <div class="container text-center">
+    <h3>How it works</h3>
+    <div class="row mt-4 g-3">
+      <div class="col-md-4">
+        <div class="p-3">
+          <h6>Create a group</h6>
+          <p class="text-muted small">Start a group for your travel buddies and invite members.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="p-3">
+          <h6>Plan your trip</h6>
+          <p class="text-muted small">Add trip details, itinerary items, and assign responsibilities.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="p-3">
+          <h6>Chat & settle up</h6>
+          <p class="text-muted small">Discuss plans in chat and track expenses to settle balances easily.</p>
+        </div>
+      </div>
+    </div>
+    <div class="mt-4">
+      <a class="btn btn-outline-primary" href="{{ url_for('register') }}">Create an account</a>
+    </div>
+  </div>
+</section>
+
+<section class="py-5">
+  <div class="container">
+    <h3 class="text-center">What our users say</h3>
+    <div class="row mt-3 g-3">
+      <div class="col-md-4">
+        <div class="card p-3 shadow-sm">
+          <p class="small">"TripSync made organizing our friend trip so easy — chats, expenses and plans in one place."</p>
+          <div class="text-muted small">— Jamie</div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card p-3 shadow-sm">
+          <p class="small">"I loved the expense split feature. No awkward money talk over drinks."</p>
+          <div class="text-muted small">— Priya</div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card p-3 shadow-sm">
+          <p class="small">"Simple UI and the itinerary grouping helped our day planning a lot."</p>
+          <div class="text-muted small">— Carlos</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="py-4 bg-dark text-white mt-5">
+  <div class="container text-center small">
+    TripSync • Plan better trips with friends • <a href="#" class="text-white">Privacy</a> • <a href="#" class="text-white">Contact</a>
+  </div>
+</footer>
+
+<script src="{{ url_for('static', filename='js/home.js') }}"></script>
+{% endblock %}

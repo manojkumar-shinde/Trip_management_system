@@ -1,0 +1,13 @@
+/* Home page specific styles */
+.hero{
+  background: linear-gradient(90deg, rgba(13,110,253,0.06), rgba(13,110,253,0.03));
+  border-radius:12px;
+  padding:48px 24px;
+  margin-bottom:20px;
+}
+.hero .display-4{ font-weight:700; }
+.card h5{ font-weight:600; }
+.card:hover{ transform: translateY(-6px); transition:all 200ms ease; }
+@media (max-width:768px){
+  .hero{ padding:32px 16px; }
+}

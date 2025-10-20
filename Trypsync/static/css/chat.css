@@ -1,0 +1,16 @@
+/* Minimal chat styles */
+.chat-panel{border:1px solid #e2e2e2;border-radius:6px;display:flex;flex-direction:column;height:400px}
+.chat-messages{flex:1;overflow:auto;padding:12px;list-style:none;margin:0}
+.chat-messages .chat-message{margin-bottom:10px;padding:8px;border-radius:12px;max-width:75%;clear:both}
+.chat-messages .chat-message .meta{font-size:0.85em;color:#333;margin-bottom:6px}
+.chat-messages .chat-message .time{font-weight:400;color:#666;margin-left:8px;font-size:0.8em}
+.chat-messages .chat-status{color:#666;text-align:center;font-style:italic;margin:8px 0}
+.chat-input{display:flex;padding:8px;border-top:1px solid #eee}
+.chat-input input{flex:1;margin-right:8px}
+.chat-input button{flex:0}
+
+/* Sender (me) */
+.chat-message.me{background:#dcf8c6;margin-left:auto;text-align:right}
+
+/* Receiver (them) */
+.chat-message.them{background:#ffffff;margin-right:auto;text-align:left}
